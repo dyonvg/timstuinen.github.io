@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tim's Tuinen - Uw Groene Dromen, Onze Passie</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Aangepaste Tailwind kleuren en lettertypen voor een meer natuurlijke/aardse look,
+        // geïnspireerd op de referentie website en de geüploade kleurenpalette.
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'green-dark': '#264d32',     // Diep mosgroen
+                        'green-medium': '#4e7c59',  // Natuurlijk bladgroen
+                        'green-light': '#a3b18a',   // Licht olijfgroen
+                        'brown-earth': '#7c5e3c',   // Aardebruin
+                        'orange-accent': '#b77b3b', // Warm oker/oranje
+                        'light-bg': '#f4f3ee',      // Zand/lichtbeige
+                        'gray-text': '#3e3e3e',     // Diep grijs voor tekst
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'], // Inter als standaard sans-serif
+                    },
+                    fontSize: {
+                        // Responsieve lettergroottes voor koppen
+                        '4xl-responsive': ['2.25rem', { lineHeight: '2.5rem' }], // Default 36px
+                        '5xl-responsive': ['3rem', { lineHeight: '3.5rem' }],   // Default 48px
+                        '6xl-responsive': ['3.75rem', { lineHeight: '1' }],     // Default 60px
+                        '7xl-responsive': ['4.5rem', { lineHeight: '1' }],      // Default 72px
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #f4f3ee; /* bg-light-bg */
+            color: #3e3e3e;            /* text-gray-text */
+            font-family: 'Inter', sans-serif;
+            /* padding-top wordt dynamisch ingesteld met JS */
+        }
+        /* Aangepast scroll-gedrag voor soepel scrollen naar ankers */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Responsive text sizing for headings */
+        h1.responsive-h1 {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+        @media (min-width: 640px) {
+            h1.responsive-h1 {
+                font-size: 3rem;
+                line-height: 3.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            h1.responsive-h1 {
+                font-size: 3.75rem;
+                line-height: 1;
+            }
+        }
+
+        h2.responsive-h2 {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+        }
+        @media (min-width: 640px) {
+            h2.responsive-h2 {
+                font-size: 2.25rem;
+                line-height: 2.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            h2.responsive-h2 {
+                font-size: 2.25rem;
+                line-height: 2.5rem;
+            }
+        }
+
+        h3.responsive-h3 {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+        @media (min-width: 640px) {
+            h3.responsive-h3 {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+        }
+
+        /* Scroll Reveal Effect Styles */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition-delay: var(--delay, 0s); /* Voor getrapte animaties */
+        }
+
+        .scroll-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Smooth transition for header slide */
+        #main-header {
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1), background 0.3s, box-shadow 0.3s;
+        }
+        /* Hide header when scrolled down */
+        .-translate-y-full {
+            transform: translateY(-100%);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden" style="margin:0;padding:0;">
+    <!-- Header (Navigatiebalk) -->
+    <header id="main-header" class="bg-green-dark fixed top-0 left-0 w-full z-[9999] py-3 px-4 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out shadow-md transform">
+        <div class="container mx-auto flex flex-wrap lg:flex-nowrap justify-between items-center relative z-0">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-bold text-white hover:text-orange-accent rounded-md py-1 -my-1 lg:py-0 lg:-my-0">Tim's Tuinen</a>
+
+            <!-- Contact Info (Desktop - Alleen zichtbaar op grotere schermen) -->
+            <div class="hidden lg:flex items-center space-x-6 text-white order-last lg:order-none w-full lg:w-auto mt-3 lg:mt-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-green-medium/50">
+                <a href="tel:+31612345678" class="flex items-center text-white hover:text-orange-accent transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684L10.45 9.28a1 1 0 00.7.462l3.473-.727a1 1 0 011.086.297l3.923 3.923a1 1 0 01.297 1.086l-.727 3.473a1 1 0 00.462.7L21.28 19a2 2 0 01-2 2h-3.28a1 1 0 01-.948-.684L12.95 14.72a1 1 0 00-.7-.462l-3.473.727a1 1 0 01-1.086-.297l-3.923-3.923a1 1 0 01-.297-1.086l.727-3.473A1 1 0 005 5h-3.28z"></path></svg>
+                    <span class="font-medium">06-12345678</span>
+                </a>
+                <a href="mailto:info@timstuinen.nl" class="flex items-center text-white hover:text-orange-accent transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <span class="font-medium">info@timstuinen.nl</span>
+                </a>
+            </div>
+
+            <!-- Navigatiemenu (Desktop) -->
+            <nav class="hidden md:flex flex-grow justify-center lg:justify-end space-x-6 lg:space-x-8 order-2 lg:order-none">
+                <a href="diensten.html" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Diensten</a>
+                <a href="#projecten" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Projecten</a>
+                <a href="#over-ons" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Over Ons</a>
+                <a href="#reviews" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Reviews</a>
+                <a href="#contact" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Contact</a>
+            </nav>
+
+            <!-- CTA Knop (Desktop) -->
+            <a href="#contact" class="hidden md:block bg-orange-accent text-white px-6 py-2 rounded-full font-medium shadow-lg hover:bg-orange-accent/90 transition-colors duration-200 order-3 lg:order-none">
+                Offerte Aanvragen
+            </a>
+
+            <!-- Mobiel Hamburger Menu -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none focus:ring-2 focus:ring-white p-2 rounded-md order-1">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobiel Navigatiemenu (Verborgen standaard, getoggled met JS) -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-green-medium/50">
+            <nav class="flex flex-col space-y-3 px-2">
+                <a href="diensten.html" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Diensten</a>
+                <a href="#projecten" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Projecten</a>
+                <a href="#over-ons" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Over Ons</a>
+                <a href="#reviews" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Reviews</a>
+                <a href="#contact" class="bg-orange-accent text-white px-6 py-2 rounded-full font-medium shadow-lg hover:bg-orange-accent/90 transition-colors duration-200 text-center mt-4">
+                    Offerte Aanvragen
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Sectie - Volledige viewport hoogte, responsieve tekst en knoppen -->
+    <section class="relative min-h-screen flex items-center justify-center text-white text-center px-4 py-20 sm:py-24 md:py-28 lg:py-32"
+        style="background: url('https://placehold.co/1920x1080/2F4858/EBF2EB?text=Prachtige+Tuin') no-repeat center center / cover;">
+        <div class="absolute inset-0 bg-green-dark opacity-70"></div>
+        <div class="relative z-10 p-6 md:p-8 lg:p-12 max-w-4xl mx-auto rounded-lg backdrop-blur-sm bg-black/30">
+            <h1 class="responsive-h1 font-extrabold leading-tight mb-4 drop-shadow-lg">
+                Tim's Tuinen: Uw Groene Dromen, Onze Passie.
+            </h1>
+            <p class="text-lg sm:text-xl lg:text-2xl mb-8 drop-shadow-md">
+                Van weelderige ontwerpen tot zorgvuldig onderhoud, wij creëren en behouden uw perfecte buitenruimte.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#diensten" class="bg-orange-accent text-white px-8 py-3 rounded-full font-semibold text-lg shadow-xl hover:bg-orange-accent/90 transition-all duration-300 transform hover:scale-105">
+                    Bekijk Onze Diensten
+                </a>
+                <a href="#contact" class="bg-green-medium text-white px-8 py-3 rounded-full font-semibold text-lg shadow-xl hover:bg-green-medium/90 transition-all duration-300 transform hover:scale-105">
+                    Vraag een Offerte Aan
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diensten Sectie (Homepage Overzicht) - Meer responsieve grid met scroll-reveal -->
+    <section id="diensten" class="py-16 px-4 sm:px-6 lg:px-8 bg-light-bg relative z-0">
+        <div class="container mx-auto relative z-0">
+            <h2 class="responsive-h2 font-extrabold text-center text-green-dark mb-12 scroll-reveal">Onze Diensten</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Dienst Kaart 1 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal" style="--delay: 0s;">
+                    <img src="https://placehold.co/150x150/658A59/ffffff?text=Ontwerp" alt="Tuinontwerp" class="w-32 h-32 rounded-full mb-6 object-cover shadow-md">
+                    <h3 class="responsive-h3 font-bold text-gray-900 mb-3">Tuinontwerp</h3>
+                    <p class="text-gray-text mb-4 flex-grow text-base">Creëer uw droomtuin met een uniek en persoonlijk ontwerp, afgestemd op uw wensen en levensstijl.</p>
+                    <a href="#" class="inline-block bg-green-medium text-white px-6 py-2 rounded-full font-medium hover:bg-green-dark transition-colors duration-200 text-sm">Lees Meer</a>
+                </div>
+                <!-- Dienst Kaart 2 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal" style="--delay: 0.1s;">
+                    <img src="https://placehold.co/150x150/658A59/ffffff?text=Aanleg" alt="Tuinaanleg" class="w-32 h-32 rounded-full mb-6 object-cover shadow-md">
+                    <h3 class="responsive-h3 font-bold text-gray-900 mb-3">Tuinaanleg</h3>
+                    <p class="text-gray-text mb-4 flex-grow text-base">Professionele realisatie van uw tuinontwerp, van bestrating tot beplanting en waterpartijen.</p>
+                    <a href="#" class="inline-block bg-green-medium text-white px-6 py-2 rounded-full font-medium hover:bg-green-dark transition-colors duration-200 text-sm">Lees Meer</a>
+                </div>
+                <!-- Dienst Kaart 3 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal" style="--delay: 0.2s;">
+                    <img src="https://placehold.co/150x150/658A59/ffffff?text=Onderhoud" alt="Tuinonderhoud" class="w-32 h-32 rounded-full mb-6 object-cover shadow-md">
+                    <h3 class="responsive-h3 font-bold text-gray-900 mb-3">Tuinonderhoud</h3>
+                    <p class="text-gray-text mb-4 flex-grow text-base">Regelmatig of eenmalig onderhoud om uw tuin het hele jaar door in topconditie te houden.</p>
+                    <a href="#" class="inline-block bg-green-medium text-white px-6 py-2 rounded-full font-medium hover:bg-green-dark transition-colors duration-200 text-sm">Lees Meer</a>
+                </div>
+                <!-- Dienst Kaart 4 -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal" style="--delay: 0.3s;">
+                    <img src="https://placehold.co/150x150/658A59/ffffff?text=Snoeien" alt="Boomverzorging & Snoeien" class="w-32 h-32 rounded-full mb-6 object-cover shadow-md">
+                    <h3 class="responsive-h3 font-bold text-gray-900 mb-3">Boomverzorging & Snoeien</h3>
+                    <p class="text-gray-text mb-4 flex-grow text-base">Deskundig advies en vakkundige snoei van bomen en struiken voor een gezonde groei.</p>
+                    <a href="#" class="inline-block bg-green-medium text-white px-6 py-2 rounded-full font-medium hover:bg-green-dark transition-colors duration-200 text-sm">Lees Meer</a>
+                </div>
+                <!-- Voeg meer diensten toe voor een volledig overzicht -->
+            </div>
+            <div class="text-center mt-12 scroll-reveal" style="--delay: 0.4s;">
+                <a href="#" class="inline-block bg-green-dark text-white px-8 py-3 rounded-full font-semibold text-lg shadow-md hover:bg-green-medium transition-colors duration-200">
+                    Bekijk Al Onze Diensten
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projecten Sectie (Homepage Overzicht) - Meer responsieve grid en afbeeldingen met scroll-reveal -->
+    <section id="projecten" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="container mx-auto">
+            <h2 class="responsive-h2 font-extrabold text-center text-green-dark mb-12 scroll-reveal">Succesvolle Projecten</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project Kaart 1 -->
+                <a href="#" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal" style="--delay: 0s;">
+                    <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Project+Stadstuin" alt="Stadstuin Amsterdam" class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl">
+                    <div class="p-6">
+                        <h3 class="responsive-h3 font-bold text-gray-900 mb-2">Stadstuin Amsterdam</h3>
+                        <p class="text-gray-text text-base">Compacte stadstuin omgetoverd tot een groene oase.</p>
+                        <span class="mt-4 inline-block text-green-medium font-semibold group-hover:underline text-sm">Bekijk Project &rarr;</span>
+                    </div>
+                </a>
+                <!-- Project Kaart 2 -->
+                <a href="#" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal" style="--delay: 0.1s;">
+                    <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Familie+Tuin" alt="Ruime Familietuin Utrecht" class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl">
+                    <div class="p-6">
+                        <h3 class="responsive-h3 font-bold text-gray-900 mb-2">Ruime Familietuin Utrecht</h3>
+                        <p class="text-gray-text text-base">Kindvriendelijk ontwerp met speelruimte en loungehoek.</p>
+                        <span class="mt-4 inline-block text-green-medium font-semibold group-hover:underline text-sm">Bekijk Project &rarr;</span>
+                    </div>
+                </a>
+                <!-- Project Kaart 3 -->
+                <a href="#" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal" style="--delay: 0.2s;">
+                    <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Water+Tuin" alt="Vijvertuin Arnhem" class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl">
+                    <div class="p-6">
+                        <h3 class="responsive-h3 font-bold text-gray-900 mb-2">Rustgevende Vijvertuin Arnhem</h3>
+                        <p class="text-gray-text text-base">Een serene watertuin met inheemse planten en een vlonder.</p>
+                        <span class="mt-4 inline-block text-green-medium font-semibold group-hover:underline text-sm">Bekijk Project &rarr;</span>
+                    </div>
+                </a>
+            </div>
+            <div class="text-center mt-12 scroll-reveal" style="--delay: 0.3s;">
+                <a href="#" class="inline-block bg-green-dark text-white px-8 py-3 rounded-full font-semibold text-lg shadow-md hover:bg-green-medium transition-colors duration-200">
+                    Bekijk Heel Ons Portfolio
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Over Ons Sectie - Responsieve layout voor tekst en afbeelding met scroll-reveal -->
+    <section id="over-ons" class="py-16 px-4 sm:px-6 lg:px-8 bg-light-bg">
+        <div class="container mx-auto flex flex-col lg:flex-row items-center gap-12">
+            <div class="lg:w-1/2 order-2 lg:order-1 text-center lg:text-left scroll-reveal" style="--delay: 0s;">
+                <h2 class="responsive-h2 font-extrabold text-green-dark mb-6">De Passie Achter Tim's Tuinen</h2>
+                <p class="text-lg text-gray-text mb-6 leading-relaxed max-w-prose lg:max-w-none mx-auto">
+                    Mijn naam is Tim, en mijn passie voor groen is de drijvende kracht achter Tim's Tuinen. Met jarenlange ervaring en een oog voor detail, help ik u graag uw buitenruimte om te toveren tot een plek waar u volledig tot rust komt. Ik geloof in duurzame oplossingen en een persoonlijke aanpak voor elke tuin, groot of klein.
+                </p>
+                <a href="#" class="inline-block bg-orange-accent text-white px-8 py-3 rounded-full font-semibold text-lg shadow-md hover:bg-orange-accent/90 transition-colors duration-200">
+                    Lees Meer Over Ons
+                </a>
+            </div>
+            <div class="lg:w-1/2 order-1 lg:order-2 scroll-reveal" style="--delay: 0.1s;">
+                <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Tim+aan+het+werk" alt="Tim aan het werk in een tuin" class="w-full h-auto rounded-xl shadow-xl">
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials / Reviews Sectie - Flexibele lay-out voor testimonials met scroll-reveal -->
+    <section id="reviews" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="container mx-auto">
+            <h2 class="responsive-h2 font-extrabold text-center text-green-dark mb-12 scroll-reveal">Wat Onze Klanten Zeggen</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-100 p-8 rounded-xl shadow-lg flex flex-col sm:flex-row items-start sm:items-center gap-6 scroll-reveal" style="--delay: 0s;">
+                    <img src="https://placehold.co/100x100/B48C5F/ffffff?text=Klant+1" alt="Profiel van klant 1" class="w-24 h-24 rounded-full object-cover shrink-0">
+                    <div>
+                        <p class="text-lg italic text-gray-text mb-4">"Tim heeft onze tuin volledig opnieuw ontworpen en aangelegd. Het resultaat is adembenemend! Precies wat we voor ogen hadden, en meer."</p>
+                        <p class="font-bold text-gray-900">- Mevrouw Jansen, Alkmaar</p>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-100 p-8 rounded-xl shadow-lg flex flex-col sm:flex-row items-start sm:items-center gap-6 scroll-reveal" style="--delay: 0.1s;">
+                    <img src="https://placehold.co/100x100/B48C5F/ffffff?text=Klant+2" alt="Profiel van klant 2" class="w-24 h-24 rounded-full object-cover shrink-0">
+                    <div>
+                        <p class="text-lg italic text-gray-text mb-4">"Al jaren doen we een beroep op Tim voor het onderhoud van onze bedrijfstuin. Altijd stipt, professioneel en de tuin ziet er fantastisch uit."</p>
+                        <p class="font-bold text-gray-900">- Dhr. de Vries, Bedrijf X</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12 scroll-reveal" style="--delay: 0.2s;">
+                <a href="#" class="inline-block bg-green-dark text-white px-8 py-3 rounded-full font-semibold text-lg shadow-md hover:bg-green-medium transition-colors duration-200">
+                    Lees Meer Reviews
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Contact Sectie - Verbeterde responsiviteit contactgegevens met scroll-reveal -->
+    <section id="contact" class="py-16 px-4 sm:px-6 lg:px-8 bg-light-bg">
+        <div class="container mx-auto text-center">
+            <h2 class="responsive-h2 font-extrabold text-green-dark mb-6 scroll-reveal">Klaar voor uw Droomtuin?</h2>
+            <p class="text-lg text-gray-text mb-8 max-w-2xl mx-auto scroll-reveal" style="--delay: 0.1s;">
+                Neem contact op voor een vrijblijvend gesprek. Wij denken graag met u mee om uw ideale buitenruimte te realiseren.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8 mb-8 scroll-reveal" style="--delay: 0.2s;">
+                <div class="flex items-center text-gray-700">
+                    <!-- Telefoon icoon -->
+                    <svg class="w-6 h-6 mr-2 text-green-medium" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684L10.45 9.28a1 1 0 00.7.462l3.473-.727a1 1 0 011.086.297l3.923 3.923a1 1 0 01.297 1.086l-.727 3.473a1 1 0 00.462.7L21.28 19a2 2 0 01-2 2h-3.28a1 1 0 01-.948-.684L12.95 14.72a1 1 0 00-.7-.462l-3.473.727a1 1 0 01-1.086-.297l-3.923-3.923a1 1 0 01-.297-1.086l.727-3.473A1 1 0 005 5h-3.28z"></path></svg>
+                    <span class="text-xl">06-12345678</span>
+                </div>
+                <div class="flex items-center text-gray-700">
+                    <!-- E-mail icoon -->
+                    <svg class="w-6 h-6 mr-2 text-green-medium" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <span class="text-xl">info@timstuinen.nl</span>
+                </div>
+            </div>
+            <a href="#" class="inline-block bg-orange-accent text-white px-8 py-3 rounded-full font-semibold text-lg shadow-xl hover:bg-orange-accent/90 transition-colors duration-200 transform hover:scale-105 scroll-reveal" style="--delay: 0.3s;">
+                Neem Nu Contact Op
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer (Voettekst) - Responsieve kolommen -->
+    <footer class="bg-green-dark text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-y-12">
+            <!-- Kolom 1: Over Tim's Tuinen -->
+            <div class="scroll-reveal" style="--delay: 0s;">
+                <h3 class="text-xl font-bold mb-4 text-orange-accent">Tim's Tuinen</h3>
+                <p class="text-gray-300 text-sm mb-4">
+                    Uw partner voor het creëren en onderhouden van prachtige, duurzame buitenruimtes. Van ontwerp tot realisatie, wij zorgen voor uw groene dromen.
+                </p>
+                <div class="flex space-x-4">
+                    <!-- Sociale media iconen (voorbeeld SVG) -->
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">
+                        <svg fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.505 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.262c-1.225 0-1.62.75-1.62 1.636V12h3.59l-.583 3.391h-3.007V22C18.343 21.128 22 16.991 22 12z"/></svg>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">
+                        <svg fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.252.148 4.772 1.691 4.91 4.897.058 1.265.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.148 3.252-1.691 4.772-4.897 4.91-1.265.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.772-1.691-4.897-4.91-.058-1.265-.07-1.646-.07-4.85s.012-3.584.07-4.85c.148-3.252 1.691-4.772 4.897-4.91 1.265-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.666.014-4.947.072-4.354.198-6.602 2.446-6.8 6.8-.058 1.281-.072 1.688-.072 4.947s.014 3.666.072 4.947c.198 4.354 2.446 6.602 6.8 6.8 1.281.058 1.688.072 4.947.072s3.666-.014 4.947-.072c4.354-.198 6.602-2.446 6.8-6.8.058-1.281.072-1.688.072-4.947s-.014-3.666-.072-4.947c-.198-4.354-2.446-6.602-6.8-6.8-1.281-.058-1.688-.072-4.947-.072zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.5-10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">
+                        <svg fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Kolom 2: Navigatie -->
+            <div class="scroll-reveal" style="--delay: 0.1s;">
+                <h3 class="text-xl font-bold mb-4 text-orange-accent">Navigatie</h3>
+                <ul class="space-y-2">
+                    <li><a href="#diensten" class="text-gray-300 hover:text-white transition-colors duration-200">Diensten</a></li>
+                    <li><a href="#projecten" class="text-gray-300 hover:text-white transition-colors duration-200">Projecten</a></li>
+                    <li><a href="#over-ons" class="text-gray-300 hover:text-white transition-colors duration-200">Over Ons</a></li>
+                    <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors duration-200">Contact</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Privacybeleid</a></li>
+                </ul>
+            </div>
+
+            <!-- Kolom 3: Contact Info -->
+            <div class="scroll-reveal" style="--delay: 0.2s;">
+                <h3 class="text-xl font-bold mb-4 text-orange-accent">Contact</h3>
+                <p class="text-gray-300 mb-2">123 Groene Straat, 1234 AB Heiloo</p>
+                <p class="text-gray-300 mb-2">Telefoon: <a href="tel:+31612345678" class="hover:text-white transition-colors duration-200">06-12345678</a></p>
+                <p class="text-gray-300 mb-2">E-mail: <a href="mailto:info@timstuinen.nl" class="hover:text-white transition-colors duration-200">info@timstuinen.nl</a></p>
+                <p class="text-gray-300">KvK: 12345678</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500 text-sm">
+            &copy; 2025 Tim's Tuinen. Alle rechten voorbehouden.
+        </div>
+    </footer>
+
+    <!-- JavaScript voor Mobiel Menu Toggle en Header Padding aanpassing en Scroll Reveal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mainHeader = document.getElementById('main-header');
+            const bodyElement = document.body;
+
+            // Functie om de padding-top van de body in te stellen op basis van de header hoogte
+            // Dit zorgt ervoor dat content niet onder de vaste header verdwijnt.
+            const setBodyPadding = () => {
+                const headerHeight = mainHeader.offsetHeight;
+                bodyElement.style.paddingTop = headerHeight + 'px';
+            };
+
+            setBodyPadding();
+
+            // Mobiel menu toggle
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                setBodyPadding();
+            });
+
+            // Sluit mobiel menu bij klik op link
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        setBodyPadding();
+                    }
+                });
+            });
+
+            // Responsive sticky header: hide on scroll down, show on scroll up
+            let lastScrollY = window.scrollY;
+            let ticking = false;
+
+            function handleScroll() {
+                const currentScrollY = window.scrollY;
+
+                // Show shadow and solid bg after scrolling 50px
+                if (currentScrollY > 50) {
+                    mainHeader.classList.add('bg-green-dark', 'bg-opacity-100', 'shadow-lg');
+                    mainHeader.classList.remove('bg-green-dark/90', 'shadow-md');
+                } else {
+                    mainHeader.classList.remove('bg-green-dark', 'bg-opacity-100', 'shadow-lg');
+                    mainHeader.classList.add('bg-green-dark/90', 'shadow-md');
+                }
+
+                // Hide on scroll down, show on scroll up
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    // Scroll down
+                    mainHeader.classList.add('-translate-y-full');
+                } else {
+                    // Scroll up
+                    mainHeader.classList.remove('-translate-y-full');
+                }
+
+                lastScrollY = currentScrollY;
+                setBodyPadding();
+            }
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        handleScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            window.addEventListener('resize', setBodyPadding);
+
+            // Scroll Reveal functionaliteit (elementen faden en sliden in)
+            const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            scrollRevealElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
