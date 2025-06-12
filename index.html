@@ -381,27 +381,27 @@
         <div class="container mx-auto relative z-0">
             <h2 class="responsive-h2 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-center text-green-dark mb-12 scroll-reveal-item">Onze Diensten</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <a href="dienst-tuinontwerp.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal-item" style="--delay: 0s;">
+                <a href="dienst-tuinontwerp.html" class="dienst-card block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal-item" style="--delay: 0s;">
                     <img src="https://placehold.co/150x150/658A59/ffffff?text=Ontwerp" alt="Tuinontwerp" class="w-32 h-32 rounded-full mb-6 object-cover shadow-md">
                     <h3 class="responsive-h3 font-bold text-gray-900 mb-3 hover:text-green-medium transition-colors duration-200">Tuinontwerp</h3>
                     <p class="text-gray-text mb-4 flex-grow text-base">Creëer uw droomtuin met een uniek en persoonlijk ontwerp.</p>
                 </a>
-                <a href="dienst-tuinaanleg.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal-item" style="--delay: 0.1s;">
+                <a href="dienst-tuinaanleg.html" class="dienst-card block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal-item" style="--delay: 0.1s;">
                     <img src="https://placehold.co/150x150/658A59/ffffff?text=Aanleg" alt="Tuinaanleg" class="w-32 h-32 rounded-full mb-6 object-cover shadow-md">
                     <h3 class="responsive-h3 font-bold text-gray-900 mb-3 hover:text-green-medium transition-colors duration-200">Tuinaanleg</h3>
                     <p class="text-gray-text mb-4 flex-grow text-base">Professionele realisatie van uw tuinontwerp.</p>
                 </a>
-                <a href="dienst-tuinonderhoud.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal-item" style="--delay: 0.2s;">
+                <a href="dienst-tuinonderhoud.html" class="dienst-card block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal-item" style="--delay: 0.2s;">
                     <img src="https://placehold.co/150x150/658A59/ffffff?text=Onderhoud" alt="Tuinonderhoud" class="w-32 h-32 rounded-full mb-6 object-cover shadow-md">
                     <h3 class="responsive-h3 font-bold text-gray-900 mb-3 hover:text-green-medium transition-colors duration-200">Tuinonderhoud</h3>
                     <p class="text-gray-text mb-4 flex-grow text-base">Regelmatig of eenmalig onderhoud voor uw tuin.</p>
                 </a>
-                <a href="dienst-boomverzorging.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal-item" style="--delay: 0.3s;">
+                <a href="dienst-boomverzorging.html" class="dienst-card block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center scroll-reveal-item" style="--delay: 0.3s;">
                     <img src="https://placehold.co/150x150/658A59/ffffff?text=Snoeien" alt="Boomverzorging & Snoeien" class="w-32 h-32 rounded-full mb-6 object-cover shadow-md">
                     <h3 class="responsive-h3 font-bold text-gray-900 mb-3 hover:text-green-medium transition-colors duration-200">Boomverzorging & Snoeien</h3>
                     <p class="text-gray-text mb-4 flex-grow text-base">Deskundig advies en vakkundige snoei van bomen.</p>
                 </a>
-                </div>
+            </div>
             <div class="text-center mt-12 scroll-reveal-item" style="--delay: 0.4s;">
                 <a href="diensten-overzicht.html" class="inline-block bg-green-dark text-white px-8 py-3 rounded-full font-semibold text-lg shadow-md hover:bg-green-medium transition-colors duration-200">
                     Bekijk Al Onze Diensten
@@ -409,6 +409,45 @@
             </div>
         </div>
     </section>
+    <style>
+    /* Vergroten op hover (desktop) */
+    .dienst-card {
+        transition: transform 0.25s cubic-bezier(.4,0,.2,1), box-shadow 0.25s;
+    }
+    @media (hover: hover) and (pointer: fine) {
+        .dienst-card:hover {
+            transform: scale(1.06);
+            z-index: 2;
+            box-shadow: 0 8px 32px 0 rgba(38,77,50,0.15), 0 1.5px 6px 0 rgba(0,0,0,0.06);
+        }
+    }
+    /* Vergroten op scroll in beeld (mobiel) */
+    @media (hover: none) and (pointer: coarse) {
+        .dienst-card.enlarged {
+            transform: scale(1.06);
+            z-index: 2;
+            box-shadow: 0 8px 32px 0 rgba(38,77,50,0.15), 0 1.5px 6px 0 rgba(0,0,0,0.06);
+        }
+    }
+    </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Alleen op mobiel: enlarge dienst-card als deze (grotendeels) in beeld is
+        if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+            const dienstCards = document.querySelectorAll('.dienst-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+                        entry.target.classList.add('enlarged');
+                    } else {
+                        entry.target.classList.remove('enlarged');
+                    }
+                });
+            }, { threshold: [0.6] });
+            dienstCards.forEach(card => observer.observe(card));
+        }
+    });
+    </script>
 
     <!-- Projecten Sectie (Homepage Overzicht) - Meer responsieve grid en afbeeldingen met scroll-reveal -->
     <section id="projecten" class="py-20 px-4 sm:px-6 lg:px-8 bg-white relative z-0">
