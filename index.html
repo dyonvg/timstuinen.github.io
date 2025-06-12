@@ -458,20 +458,11 @@
                     Een greep uit recent gerealiseerde droomtuinen.
                 </p>
             </div>
-            <!-- Horizontale scroll, geen verticale scroll -->
-            <div class="relative">
-                <!-- Scroll hint overlay (mobile only) -->
-                <div class="absolute left-2 top-1/2 -translate-y-1/2 z-20 flex items-center pointer-events-none sm:hidden">
-                    <svg class="w-8 h-8 text-green-dark/70 animate-bounce-x" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                    </svg>
-                    <span class="ml-2 text-green-dark/70 font-semibold text-base">Swipe</span>
-                </div>
-                <!-- Responsive wrapper: horizontal scroll on mobile, grid on desktop -->
-                <div 
-                    class="flex overflow-x-auto overflow-y-hidden pb-4 lg:pb-0 snap-x snap-mandatory gap-6 sm:gap-8 
-                           lg:grid lg:grid-cols-2 xl:grid-cols-3 scroll-reveal-group"
-                    style="scrollbar-width: thin; scrollbar-color: #B0B0B0 #f4f3ee; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; overscroll-behavior-y: none; min-height: 0;"
+                <div
+                    id="project-cards-container"
+                    class="flex overflow-x-auto pb-4 lg:pb-0 snap-x snap-mandatory gap-6 sm:gap-8
+                                lg:grid lg:grid-cols-2 xl:grid-cols-3 scroll-reveal-group"
+                    style="scrollbar-width: thin; scrollbar-color: #B0B0B0 #f4f3ee; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;"
                 >
                     <a href="project-stadstuin-amsterdam.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 project-card-hover-effect min-w-[80vw] max-w-[80vw] sm:min-w-[45vw] sm:max-w-[45vw] lg:min-w-0 lg:max-w-none snap-start flex-shrink-0 scroll-reveal-item first:ml-[8vw] sm:first:ml-0">
                         <img src="https://placehold.co/600x400/264d32/f4f3ee?text=Stadstuin+Amsterdam" alt="Stadstuin Amsterdam" class="w-full h-56 sm:h-64 md:h-72 object-cover card-image">
@@ -528,7 +519,6 @@
                         </div>
                     </a>
                 </div>
-                <!-- Extra whitespace for mobile scroll (prevents last card from being cut off) -->
                 <div class="block sm:hidden" style="min-width: 16vw; height: 1px;"></div>
             </div>
             <div class="text-center mt-16 scroll-reveal-item px-4">
@@ -546,58 +536,83 @@
             .animate-bounce-x {
                 animation: bounce-x 1.2s infinite;
             }
-            /* Verberg verticale scrollbars en forceer geen verticale scroll */
-            #projecten .flex.overflow-x-auto {
-                overflow-y: hidden !important;
-                min-height: 0;
+
+            /* Styles for the horizontally scrolling container */
+            .flex.overflow-x-auto {
+                -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+                scrollbar-width: thin; /* Firefox */
+                scrollbar-color: #B0B0B0 #f4f3ee; /* Firefox */
+                /* Add some padding to allow overscroll past the last item for boomerang effect */
+                padding-right: 2rem; /* Adjust as needed for the 'bounce' distance */
             }
-            /* Mobiel: cards overlappen niet, er is ruimte tussen de kaarten */
-            @media (max-width: 639px) {
-                /* Apply scroll-snap properties to the container */
+
+            /* Mobiel specific styles (up to large breakpoint, which is 1023px) */
+            @media (max-width: 1023px) {
                 #projecten .flex.overflow-x-auto {
-                    scroll-snap-type: x mandatory; /* Enable horizontal snapping, mandatory means it must snap */
-                    /* Set the initial padding for the first card to its desired 1.5rem offset. */
+                    overflow-y: hidden; /* Hide vertical scrollbar for the horizontal section on mobile */
+                    scroll-snap-type: x mandatory;
                     scroll-padding-left: 1.5rem;
-                    /* Use 'gap' property to create space BETWEEN flex items. */
-                    gap: 0.01rem; /* This controls the white space BETWEEN cards */
+                    scroll-padding-right: 1.5rem; /* Ensure ample padding for snap-end */
+                    gap: 0.01rem;
+                    min-height: 0; /* Ensures content doesn't force vertical scroll within this element */
                 }
 
                 #projecten .flex.overflow-x-auto > a {
-                    margin-right: 0rem;           /* Not strictly needed anymore, 'gap' handles spacing */
-                    margin-left: 1rem;            /* Set to 0 as 'gap' property now manages inter-card spacing */
-
-                    /* IMPORTANT: Set card width to ensure the next card is visible and they are not too wide.
-                    Calculation:
-                    100vw (viewport width)
-                    - 1.5rem (scroll-padding-left: initial offset for the first card)
-                    - 0.5rem (gap: space between the snapped card and the next)
-                    - 10rem (This is the remaining space on the right to ensure the desired 'peek' of the next card,
-                                contributing to the narrower overall card size. Adjust this value to make cards wider/narrower.)
-                    = 100vw - 12rem (total non-card space removed from 100vw to determine card width)
-                    */
+                    margin-left: 1rem;
                     min-width: calc(100vw - 12rem);
-                    max-width: calc(100vw - 12rem); /* Use max-width to prevent cards from becoming too wide */
-
-                    scroll-snap-align: start;     /* Make each card snap to the start of the scroll container's padded area */
+                    max-width: calc(100vw - 12rem);
+                    /* Ensure the last card snaps to the end */
+                    scroll-snap-align: start; 
                 }
+                /* Explicitly make the last card snap to the end to aid the boomerang feel */
                 #projecten .flex.overflow-x-auto > a:last-child {
-                    margin-right: 0; /* Ensures no extra margin after the very last card */
+                    scroll-snap-align: end;
+                }
+
+
+                /* Make images more vertical on mobile */
+                #projecten .flex.overflow-x-auto > a img {
+                    width: 100%;
+                    height: auto;
+                    aspect-ratio: 3 / 4;
+                    object-fit: cover;
+                }
+
+                #projecten .flex.overflow-x-auto > a:last-child {
+                    margin-right: 0;
                 }
                 #projecten .block.sm\:hidden {
-                    display: block !important; /* Ensure this spacer element is visible on mobile */
-                    min-width: 16vw;           /* Provides extra scrollable space, especially at the end */
-                    height: 1px;               /* Keeps it visually minimal */
+                    display: block !important;
+                    width: 0;
+                    height: 1px;
                 }
-                /* The :first-child rule for margin-left is no longer needed as scroll-padding-left handles the first item's offset */
+
+                /* Add this class to temporarily disable clicks during drag */
+                .dragging-active {
+                    cursor: grabbing;
+                    user-select: none; /* Prevent text selection during drag */
+                    -webkit-user-select: none; /* For WebKit browsers */
+                }
+                /* Explicitly disable pointer events on the links during drag */
+                .dragging-active a {
+                    pointer-events: none;
+                }
             }
-            /* Desktop: normale grid, alle rijen zichtbaar */
+
+            /* Desktop specific styles (from large breakpoint, 1024px and up) */
             @media (min-width: 1024px) {
                 #projecten .flex.overflow-x-auto {
                     display: grid !important;
-                   grid-template-columns: repeat(2, minmax(0, 1fr));
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    
                     gap: 2rem;
-                    overflow-x: visible !important;
-                    max-height: none !important;
+                    overflow-x: visible !important; /* IMPORTANT: Hide horizontal scroll on larger desktop screens */
+                    overflow-y: visible !important; /* Allow vertical scroll for the content within this section */
+                    min-height: auto; /* Reset min-height for desktop */
+                    scroll-snap-type: none; /* Disable scroll-snap on desktop */
+                    scroll-padding-left: 0; /* Reset scroll-padding */
+                    scroll-padding-right: 0; /* Reset scroll-padding */
+                    padding-right: 0; /* Remove padding for desktop grid */
                 }
                 @media (min-width: 1280px) {
                     #projecten .flex.overflow-x-auto {
@@ -608,12 +623,149 @@
                     min-width: 0 !important;
                     max-width: none !important;
                     margin-right: 0 !important;
+                    margin-left: 0 !important; /* Reset margin-left for desktop */
+                }
+                /* Reset image aspect ratio on desktop if needed, or let it inherit */
+                #projecten .flex.overflow-x-auto > a img {
+                    aspect-ratio: auto; /* Reset to natural aspect ratio */
+                    height: auto;
                 }
                 #projecten .block.sm\:hidden {
                     display: none !important;
                 }
             }
         </style>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.getElementById('project-cards-container');
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+                let isDragging = false; // Flag to indicate if a drag has occurred
+                const DRAG_THRESHOLD = 3; // Pixels moved before considering it a drag (reduced from 5)
+                const SCROLL_SPEED_MULTIPLIER = 1.5; // Controls how fast it scrolls (increased from 1)
+
+                // Function to reset drag state
+                const resetDragState = () => {
+                    isDown = false;
+                    isDragging = false;
+                    if (container) {
+                        container.classList.remove('active');
+                        container.classList.remove('dragging-active'); // Ensure this is removed
+                    }
+                };
+
+                // Event handlers
+                const handleMouseDown = (e) => {
+                    // Only act on left mouse button
+                    if (e.button !== 0) return; 
+
+                    isDown = true;
+                    container.classList.add('active'); // Optional: add a class for styling when dragging
+                    startX = e.pageX;
+                    scrollLeft = container.scrollLeft;
+                    isDragging = false; // Reset drag flag
+                    
+                    // Prevent default text selection at the start of a potential drag
+                    e.preventDefault(); 
+                };
+
+                const handleMouseLeave = () => {
+                    resetDragState();
+                };
+
+                const handleMouseUp = (e) => {
+                    // If a drag truly occurred (moved beyond threshold)
+                    if (isDragging) {
+                        // Prevent the click event that might fire after a drag
+                        e.preventDefault(); 
+                        e.stopPropagation(); // Stop propagation to ensure the link doesn't get activated
+                    }
+                    resetDragState(); // Always reset state on mouse up
+                };
+
+                const handleMouseMove = (e) => {
+                    if (!isDown) return;
+
+                    const currentX = e.pageX;
+                    const distanceMoved = Math.abs(currentX - startX); // Absolute distance from initial startX
+
+                    if (distanceMoved > DRAG_THRESHOLD) {
+                        isDragging = true;
+                        container.classList.add('dragging-active'); // Add class to disable pointer-events on children
+                    } else {
+                        // If we haven't crossed the threshold yet, and isDragging was false, keep it false.
+                        // If it was already true, it means we are still in a drag.
+                        if (isDragging === false) { 
+                            container.classList.remove('dragging-active');
+                        }
+                    }
+
+                    // If currently dragging, prevent default to avoid text selection
+                    if (isDragging) {
+                        e.preventDefault();
+                    }
+
+                    // Calculate scroll amount based on current position relative to previous position
+                    const walk = (currentX - startX) * SCROLL_SPEED_MULTIPLIER; 
+                    
+                    // Apply smooth scroll
+                    container.scrollBy({
+                        left: -walk, // Negative walk because moving mouse right scrolls content left
+                        behavior: 'smooth' 
+                    });
+
+                    // Update startX to current position for next calculation, ensuring continuous smooth scroll
+                    startX = currentX;
+                };
+
+                // This function is for the click event on the links themselves
+                const preventClick = (e) => {
+                    // Check if a drag just finished (determined by isDragging flag)
+                    if (isDragging) { 
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                };
+
+                // Main function to apply/remove drag scroll listeners
+                const applyDragScroll = () => {
+                    const isMobileResolution = window.innerWidth <= 1023;
+
+                    // Always remove all potentially existing listeners first to prevent duplicates
+                    container.removeEventListener('mousedown', handleMouseDown);
+                    container.removeEventListener('mouseleave', handleMouseLeave);
+                    container.removeEventListener('mouseup', handleMouseUp);
+                    container.removeEventListener('mousemove', handleMouseMove);
+                    container.querySelectorAll('a').forEach(link => {
+                        link.removeEventListener('click', preventClick);
+                    });
+
+                    // Apply listeners only if in mobile resolution
+                    if (isMobileResolution) {
+                        container.style.overflowX = 'auto';
+                        container.addEventListener('mousedown', handleMouseDown);
+                        container.addEventListener('mouseleave', handleMouseLeave);
+                        container.addEventListener('mouseup', handleMouseUp);
+                        container.addEventListener('mousemove', handleMouseMove);
+
+                        container.querySelectorAll('a').forEach(link => {
+                            link.addEventListener('click', preventClick);
+                        });
+                    } else {
+                        container.style.overflowX = 'visible';
+                        resetDragState(); // Ensure state is clean on desktop
+                    }
+                };
+
+                // Initial application
+                applyDragScroll();
+
+                // Re-apply on window resize
+                window.addEventListener('resize', applyDragScroll);
+            });
+        </script>
     </section>
 
     <!-- Over Ons Sectie - Responsieve layout voor tekst en afbeelding met scroll-reveal -->   
