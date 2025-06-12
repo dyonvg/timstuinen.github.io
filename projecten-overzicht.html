@@ -6,26 +6,53 @@
     <title>Projecten - Tim's Tuinen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // Custom Tailwind configuration (from index.html with additions from index3 for responsive fonts)
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'green-dark': '#264d32',
-                        'green-medium': '#4e7c59',
-                        'green-light': '#a3b18a',
-                        'brown-earth': '#7c5e3c',
-                        'orange-accent': '#b77b3b',
-                        'light-bg': '#f4f3ee',
-                        'gray-text': '#3e3e3e',
+                        'green-dark': '#264d32',     // Diep mosgroen
+                        'green-medium': '#4e7c59',  // Natuurlijk bladgroen
+                        'green-light': '#a3b18a',   // Licht olijfgroen
+                        'brown-earth': '#7c5e3c',   // Aardebru
+                        'orange-accent': '#b77b3b', // Warm oker/oranje
+                        'light-bg': '#f4f3ee',      // Zand/lichtbeige
+                        'gray-text': '#3e3e3e',     // Diep grijs voor tekst
+                        'subtle-gray': '#B0B0B0',   // Added for scrollbar track
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'], // Inter als standaard sans-serif
                     },
                     fontSize: {
-                        '4xl-responsive': ['2.25rem', { lineHeight: '2.5rem' }],
-                        '5xl-responsive': ['3rem', { lineHeight: '3.5rem' }],
-                        '6xl-responsive': ['3.75rem', { lineHeight: '1' }],
-                        '7xl-responsive': ['4.5rem', { lineHeight: '1' }],
+                        // Responsive lettergroottes aangepast voor modernere look (vloeiender met clamp())
+                        'hero-lg': ['clamp(2.5rem, 5vw, 4.5rem)', { lineHeight: '1.1' }],
+                        'section-lg': ['clamp(2rem, 4vw, 3.5rem)', { lineHeight: '1.2' }],
+                        'card-title-lg': ['clamp(1.5rem, 3vw, 2rem)', { lineHeight: '1.3' }],
+                    },
+                     keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        zoomIn: {
+                            '0%': { transform: 'scale(1.05)' },
+                            '100%': { transform: 'scale(1)' },
+                        },
+                        slideInLeft: {
+                            '0%': { opacity: '0', transform: 'translateX(-20px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        borderGrow: {
+                            '0%': { width: '0%', height: '0%' },
+                            '100%': { width: '100%', height: '100%' },
+                        }
+                    },
+                    animation: {
+                        fadeInUp: 'fadeInUp 0.8s ease-out forwards',
+                        zoomIn: 'zoomIn 0.8s ease-out forwards',
+                        slideInLeft: 'slideInLeft 0.7s ease-out forwards',
+                        slideInRight: 'slideInRight 0.7s ease-out forwards',
+                        borderGrow: 'borderGrow 0.3s ease-out forwards',
                     }
                 }
             }
@@ -33,62 +60,297 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        html, body { height: 100%; margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #f4f3ee; color: #3e3e3e; font-family: 'Inter', sans-serif; }
-        html { scroll-behavior: smooth; }
-        h1.responsive-h1 { font-size: 2.25rem; line-height: 2.5rem; }
-        @media (min-width: 640px) { h1.responsive-h1 { font-size: 3rem; line-height: 3.5rem; } }
-        @media (min-width: 1024px) { h1.responsive-h1 { font-size: 3.75rem; line-height: '1'; } }
-        h2.responsive-h2 { font-size: 1.875rem; lineHeight: 2.25rem; }
-        @media (min-width: 640px) { h2.responsive-h2 { font-size: 2.25rem; line-height: 2.5rem; } }
-        @media (min-width: 1024px) { h2.responsive-h2 { font-size: 2.25rem; line-height: 2.5rem; } }
-        h3.responsive-h3 { font-size: 1.25rem; line-height: 1.75rem; }
-        @media (min-width: 640px) { h3.responsive-h3 { font-size: 1.5rem; line-height: 2rem; } }
-        .scroll-reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s; }
-        .scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
-        #main-header { transition: transform 0.3s cubic-bezier(.4,0,.2,1), background 0.3s, box-shadow 0.3s; }
-        .-translate-y-full { transform: translateY(-100%); }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: theme('colors.light-bg'); /* bg-light-bg */
+            color: theme('colors.gray-text');            /* text-gray-text */
+            font-family: theme('fontFamily.sans');
+            overflow-x: hidden; /* Prevent horizontal scroll bars from animations */
+        }
+        /* Aangepast scroll-gedrag voor soepel scrollen naar ankers */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Responsive text sizing for headings (matching the prompt's reference) */
+        h1.responsive-h1 {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+        @media (min-width: 640px) {
+            h1.responsive-h1 {
+                font-size: 3rem;
+                line-height: 3.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            h1.responsive-h1 {
+                font-size: 3.75rem;
+                line-height: 1;
+            }
+        }
+
+        h2.responsive-h2 {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+        }
+        @media (min-width: 640px) {
+            h2.responsive-h2 {
+                font-size: 2.25rem;
+                line-height: 2.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            h2.responsive-h2 {
+                font-size: 2.25rem;
+                line-height: 2.5rem;
+            }
+        }
+
+        h3.responsive-h3 {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+        @media (min-width: 640px) {
+            h3.responsive-h3 {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+        }
+
+        /* Scroll Reveal Effect Styles (from index3.html) */
+        .scroll-reveal-item {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition-delay: var(--delay, 0s);
+        }
+
+        .scroll-reveal-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Specific animation delays for grouped elements (from index3.html) */
+        .scroll-reveal-group > *:nth-child(1) { --delay: 0s; }
+        .scroll-reveal-group > *:nth-child(2) { --delay: 0.1s; }
+        .scroll-reveal-group > *:nth-child(3) { --delay: 0.2s; }
+        .scroll-reveal-group > *:nth-child(4) { --delay: 0.3s; }
+        .scroll-reveal-group > *:nth-child(5) { --delay: 0.4s; }
+        .scroll-reveal-group > *:nth-child(6) { --delay: 0.5s; }
+
+
+        /* Sticky header effect (from index3.html) */
+        #main-header {
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1), background 0.3s, box-shadow 0.3s;
+            transform: translateY(0); /* Ensure transform is set by default */
+            will-change: transform;
+            z-index: 9999;
+        }
+        #main-header.scrolled {
+            background-color: theme('colors.green-dark'); /* Solide achtergrond bij scrollen */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(0) !important; /* Force show when scrolled */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .-translate-y-full {
+            transform: translateY(-100%);
+        }
+
+        /* Hover effect for buttons with subtle border reveal (from index3.html) */
+        .btn-hover-border-grow {
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+        .btn-hover-border-grow::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid theme('colors.orange-accent');
+            border-radius: 9999px; /* For full rounded buttons */
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: -1;
+        }
+        .btn-hover-border-grow:hover::before {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Micro-interactie voor menu knop (from index3.html) */
+        #mobile-menu-button {
+            transition: transform 0.2s ease-in-out;
+        }
+        #mobile-menu-button.active {
+            transform: rotate(90deg);
+        }
+
+        /* Specific styles for the "Diensten" section items (from index3.html) */
+        .service-item-wrapper {
+            display: flex;
+            align-items: flex-start; /* Align items to the top */
+            text-align: left;
+            margin-bottom: 2rem; /* Spacing between items */
+        }
+
+        .service-item-icon {
+            border: 2px solid theme('colors.green-medium'); /* Gebruik green-medium voor de rand */
+            border-radius: 9999px; /* Full circle */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px; /* Smaller icons for this layout */
+            height: 60px;
+            min-width: 60px; /* Prevent shrinking */
+            min-height: 60px; /* Prevent shrinking */
+            background-color: theme('colors.orange-accent'); /* Accent achtergrond */
+            color: theme('colors.green-dark'); /* Donkere icon kleur */
+            transition: transform 0.3s ease-in-out;
+            margin-right: 1.5rem; /* Space between icon and text */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        .service-item-wrapper:hover .service-item-icon {
+            transform: scale(1.1);
+        }
+
+        /* Custom scrollbar for Projects section on mobile (from index3.html) */
+        .overflow-x-auto::-webkit-scrollbar {
+            height: 8px;
+        }
+        .overflow-x-auto::-webkit-scrollbar-track {
+            background: theme('colors.subtle-gray'); /* Light track */
+            border-radius: 10px;
+        }
+        .overflow-x-auto::-webkit-scrollbar-thumb {
+            background: theme('colors.gray-text'); /* Darker thumb */
+            border-radius: 10px;
+        }
+        .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.green-dark');
+        }
+
+        /* Hero video specific styling (from index3.html) */
+        .hero-video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            filter: brightness(0.6); /* Donkerder maken van de video */
+            object-fit: cover;
+        }
+
+        /* Project Card Hover Effect (from index3.html) */
+        .project-card-hover-effect {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem; /* rounded-xl */
+        }
+        .project-card-hover-effect .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(38,77,50,0.9) 0%, rgba(38,77,50,0) 50%); /* green-dark overlay */
+            opacity: 0.9; /* Initial opacity */
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+        .project-card-hover-effect:hover .image-overlay {
+            opacity: 1; /* Fully opaque on hover */
+        }
+        .project-card-hover-effect .card-text-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem; /* p-6 */
+            color: white;
+            z-index: 20;
+        }
+        .project-card-hover-effect .card-text-content p,
+        .project-card-hover-effect .card-text-content span {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .project-card-hover-effect:hover .card-text-content p,
+        .project-card-hover-effect:hover .card-text-content span {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .project-card-hover-effect .card-image {
+            transition: transform 0.5s ease-out;
+        }
+        .project-card-hover-effect:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        /* Star rating styles (from index3.html) */
+        .star-rating {
+            display: flex;
+            color: theme('colors.orange-accent'); /* Kleur voor de sterren */
+        }
+        .star-rating svg {
+            width: 1.25rem; /* w-5 */
+            height: 1.25rem; /* h-5 */
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
-    <!-- Header (Consistent met index.html) -->
-    <header id="main-header" class="bg-green-dark/90 backdrop-blur-sm fixed top-0 left-0 w-full z-[9999] py-3 px-4 sm:px-6 lg:px-8 transition-all duration-300 ease-in-out shadow-md transform">
+    <div id="header-placeholder"></div>
+    <header id="main-header" class="fixed top-0 left-0 w-full z-[9999] py-4 px-4 sm:px-6 lg:px-8 shadow-lg bg-green-dark">
         <div class="container mx-auto flex flex-wrap lg:flex-nowrap justify-between items-center relative z-0">
-            <a href="index.html" class="text-2xl font-bold text-white hover:text-orange-accent rounded-md py-1 -my-1 lg:py-0 lg:-my-0">Tim's Tuinen</a>
-            <div class="hidden lg:flex items-center space-x-6 text-white order-last lg:order-none w-full lg:w-auto mt-3 lg:mt-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-green-medium/50">
-                <a href="tel:+31612345678" class="flex items-center text-white hover:text-orange-accent transition-colors duration-200">
-                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684L10.45 9.28a1 1 0 00.7.462l3.473-.727a1 1 0 011.086.297l3.923 3.923a1 1 0 01.297 1.086l-.727 3.473a1 1 0 00.462.7L21.28 19a2 2 0 01-2 2h-3.28a1 1 0 01-.948-.684L12.95 14.72a1 1 0 00-.7-.462l-3.473.727a1 1 0 01-1.086-.297l-3.923-3.923a1 1 0 01-.297-1.086l.727-3.473A1 1 0 005 5h-3.28z"></path></svg>
+            <a href="index.html" class="text-3xl font-bold text-light-bg hover:text-orange-accent transition-colors duration-200">Tim's Tuinen</a>
+
+            <div class="hidden lg:flex items-center space-x-6 text-light-bg order-last lg:order-none w-full lg:w-auto mt-3 lg:mt-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-green-medium/50 lg:ml-8">
+                <a href="tel:+31612345678" class="flex items-center text-light-bg hover:text-orange-accent transition-colors duration-200">
+                    <!-- Phone icon (Heroicons outline) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone" viewBox="0 0 16 16">
+                    <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                    <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                    </svg>
                     <span class="font-medium">06-12345678</span>
                 </a>
-                <a href="mailto:info@timstuinen.nl" class="flex items-center text-white hover:text-orange-accent transition-colors duration-200">
-                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                <a href="mailto:info@timstuinen.nl" class="flex items-center text-light-bg hover:text-orange-accent transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     <span class="font-medium">info@timstuinen.nl</span>
                 </a>
             </div>
-            <nav class="hidden md:flex flex-grow justify-center lg:justify-end space-x-6 lg:space-x-8 order-2 lg:order-none">
-                <a href="diensten-overzicht.html" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Diensten</a>
-                <a href="projecten-overzicht.html" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Projecten</a>
-                <a href="over-ons-pagina.html" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Over Ons</a>
-                <a href="#reviews" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Reviews</a>
-                <a href="contact-pagina.html" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md">Contact</a>
+
+            <nav class="hidden md:flex flex-grow justify-center lg:justify-end space-x-6 order-2 lg:order-none">
+                <a href="diensten-overzicht.html" class="text-light-bg hover:text-orange-accent transition-colors duration-200 py-2 relative group">Diensten<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-accent transition-all duration-300 group-hover:w-full"></span></a>
+                <a href="projecten-overzicht.html" class="text-light-bg hover:text-orange-accent transition-colors duration-200 py-2 relative group">Projecten<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-accent transition-all duration-300 group-hover:w-full"></span></a>
+                <a href="over-ons-pagina.html" class="text-light-bg hover:text-orange-accent transition-colors duration-200 py-2 relative group">Over Ons<span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-accent transition-all duration-300 group-hover:w-full"></span></a>
             </nav>
-            <a href="contact-pagina.html" class="hidden md:block bg-orange-accent text-white px-6 py-2 rounded-full font-medium shadow-lg hover:bg-orange-accent/90 transition-colors duration-200 order-3 lg:order-none">
+
+            <a href="contact-pagina.html" class="hidden md:block bg-orange-accent text-green-dark px-6 py-2 rounded-full font-semibold shadow-lg hover:bg-orange-accent/90 transition-all duration-300 btn-hover-border-grow order-3 lg:order-none ml-10">
                 Offerte Aanvragen
             </a>
-            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none focus:ring-2 focus:ring-white p-2 rounded-md order-1">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+            <button id="mobile-menu-button" class="md:hidden text-light-bg focus:outline-none focus:ring-2 focus:ring-orange-accent p-2 rounded-md order-1">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
             </button>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-green-medium/50">
+
+        <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-green-medium/50 animate-fadeInUp">
             <nav class="flex flex-col space-y-3 px-2">
-                <a href="diensten-overzicht.html" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Diensten</a>
-                <a href="projecten-overzicht.html" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Projecten</a>
-                <a href="over-ons-pagina.html" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Over Ons</a>
-                <a href="#reviews" class="text-white hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Reviews</a>
-                <a href="contact-pagina.html" class="bg-orange-accent text-white px-6 py-2 rounded-full font-medium shadow-lg hover:bg-orange-accent/90 transition-colors duration-200 text-center mt-4">
+                <a href="diensten-overzicht.html" class="text-light-bg hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Diensten</a>
+                <a href="projecten-overzicht.html" class="text-light-bg hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Projecten</a>
+                <a href="over-ons-pagina.html" class="text-light-bg hover:text-orange-accent transition-colors duration-200 py-2 rounded-md block">Over Ons</a>
+                <a href="contact-pagina.html" class="bg-orange-accent text-green-dark px-6 py-2 rounded-full font-medium shadow-lg hover:bg-orange-accent/90 transition-colors duration-200 text-center mt-4 btn-hover-border-grow">
                     Offerte Aanvragen
                 </a>
             </nav>
@@ -99,8 +361,8 @@
     <section class="relative bg-green-dark text-white py-20 px-4 sm:px-6 lg:px-8 pt-32 pb-20">
         <div class="absolute inset-0" style="background: url('https://placehold.co/1920x400/2F4858/EBF2EB?text=Projecten+Header') no-repeat center center / cover; opacity: 0.6;"></div>
         <div class="container mx-auto relative z-10 text-center">
-            <h1 class="responsive-h1 font-extrabold mb-4 drop-shadow-lg scroll-reveal">Onze Recent Voltooide Projecten</h1>
-            <p class="text-xl max-w-3xl mx-auto drop-shadow-md scroll-reveal" style="--delay: 0.1s;">
+            <h1 class="responsive-h1 font-extrabold mb-4 drop-shadow-lg scroll-reveal-item" style="--delay: 0s;">Onze Recent Voltooide Projecten</h1>
+            <p class="text-xl max-w-3xl mx-auto drop-shadow-md scroll-reveal-item" style="--delay: 0.1s;">
                 Laat u inspireren door een selectie van onze meest recente en diverse tuinprojecten.
             </p>
         </div>
@@ -110,9 +372,9 @@
     <main class="py-16 px-4 sm:px-6 lg:px-8 bg-light-bg min-h-screen">
         <div class="container mx-auto">
             <section class="mb-16">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-reveal-group">
                     <!-- Project Kaart 1 -->
-                    <a href="project-stadstuin-amsterdam.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal" style="--delay: 0s;">
+                    <a href="project-stadstuin-amsterdam.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal-item" style="--delay: 0s;">
                         <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Project+Stadstuin" alt="Stadstuin Amsterdam" class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl">
                         <div class="p-6">
                             <h3 class="responsive-h3 font-bold text-gray-900 mb-2">Stadstuin Amsterdam</h3>
@@ -121,7 +383,7 @@
                         </div>
                     </a>
                     <!-- Project Kaart 2 -->
-                    <a href="project-familietuin-utrecht.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal" style="--delay: 0.1s;">
+                    <a href="project-familietuin-utrecht.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal-item" style="--delay: 0.1s;">
                         <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Familie+Tuin" alt="Ruime Familietuin Utrecht" class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl">
                         <div class="p-6">
                             <h3 class="responsive-h3 font-bold text-gray-900 mb-2">Ruime Familietuin Utrecht</h3>
@@ -130,7 +392,7 @@
                         </div>
                     </a>
                     <!-- Project Kaart 3 -->
-                    <a href="project-vijvertuin-arnhem.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal" style="--delay: 0.2s;">
+                    <a href="project-vijvertuin-arnhem.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal-item" style="--delay: 0.2s;">
                         <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Vijvertuin" alt="Rustgevende Vijvertuin Arnhem" class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl">
                         <div class="p-6">
                             <h3 class="responsive-h3 font-bold text-gray-900 mb-2">Rustgevende Vijvertuin Arnhem</h3>
@@ -139,7 +401,7 @@
                         </div>
                     </a>
                     <!-- Project Kaart 4 -->
-                    <a href="#" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal" style="--delay: 0.3s;">
+                    <a href="#" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal-item" style="--delay: 0.3s;">
                         <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Dakterras+Rotterdam" alt="Dakterras Rotterdam" class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl">
                         <div class="p-6">
                             <h3 class="responsive-h3 font-bold text-gray-900 mb-2">Modern Dakterras Rotterdam</h3>
@@ -148,7 +410,7 @@
                         </div>
                     </a>
                     <!-- Project Kaart 5 -->
-                    <a href="#" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal" style="--delay: 0.4s;">
+                    <a href="#" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal-item" style="--delay: 0.4s;">
                         <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Landhuis+Hilversum" alt="Tuin Landhuis Hilversum" class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl">
                         <div class="p-6">
                             <h3 class="responsive-h3 font-bold text-gray-900 mb-2">Landelijke Tuin Hilversum</h3>
@@ -157,7 +419,7 @@
                         </div>
                     </a>
                     <!-- Project Kaart 6 -->
-                    <a href="#" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal" style="--delay: 0.5s;">
+                    <a href="#" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group scroll-reveal-item" style="--delay: 0.5s;">
                         <img src="https://placehold.co/600x400/2F4858/EBF2EB?text=Bedrijfstuin+Tilburg" alt="Bedrijfstuin Tilburg" class="w-full h-56 sm:h-64 md:h-72 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl">
                         <div class="p-6">
                             <h3 class="responsive-h3 font-bold text-gray-900 mb-2">Groene Bedrijfstuin Tilburg</h3>
@@ -168,7 +430,7 @@
                 </div>
             </section>
 
-            <section class="text-center py-12 bg-white rounded-xl shadow-lg scroll-reveal" style="--delay: 0.6s;">
+            <section class="text-center py-12 bg-white rounded-xl shadow-lg scroll-reveal-item" style="--delay: 0.6s;">
                 <h2 class="responsive-h2 font-extrabold text-green-dark mb-6">Uw Droomproject Start Hier</h2>
                 <p class="text-lg text-gray-text mb-8 max-w-3xl mx-auto">
                     Heeft u een specifiek idee of bent u benieuwd wat wij voor uw project kunnen betekenen? Neem vrijblijvend contact met ons op!
@@ -180,13 +442,13 @@
         </div>
     </main>
 
-    <!-- Footer (Consistent met index.html) -->
+    <!-- Footer (Voettekst) - Responsieve kolommen -->    
     <footer class="bg-green-dark text-white py-12 px-4 sm:px-6 lg:px-8">
         <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-y-12">
-            <div class="scroll-reveal" style="--delay: 0s;">
+            <div class="scroll-reveal-item" style="--delay: 0s;">
                 <h3 class="text-xl font-bold mb-4 text-orange-accent">Tim's Tuinen</h3>
                 <p class="text-gray-300 text-sm mb-4">
-                    Uw partner voor het creëren en onderhouden van prachtige, duurzame buitenruimtes. Van ontwerp tot realisatie, wij zorgen voor uw groene dromen.
+                    Uw partner voor het creëren en onderhouden van prachtige, duurzame buitenruimtes.
                 </p>
                 <div class="flex space-x-4">
                     <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">
@@ -200,7 +462,8 @@
                     </a>
                 </div>
             </div>
-            <div class="scroll-reveal" style="--delay: 0.1s;">
+
+            <div class="scroll-reveal-item" style="--delay: 0.1s;">
                 <h3 class="text-xl font-bold mb-4 text-orange-accent">Navigatie</h3>
                 <ul class="space-y-2">
                     <li><a href="diensten-overzicht.html" class="text-gray-300 hover:text-white transition-colors duration-200">Diensten</a></li>
@@ -210,7 +473,8 @@
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Privacybeleid</a></li>
                 </ul>
             </div>
-            <div class="scroll-reveal" style="--delay: 0.2s;">
+
+            <div class="scroll-reveal-item" style="--delay: 0.2s;">
                 <h3 class="text-xl font-bold mb-4 text-orange-accent">Contact</h3>
                 <p class="text-gray-300 mb-2">123 Groene Straat, 1234 AB Heiloo</p>
                 <p class="text-gray-300 mb-2">Telefoon: <a href="tel:+31612345678" class="hover:text-white transition-colors duration-200">06-12345678</a></p>
@@ -228,52 +492,54 @@
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             const mainHeader = document.getElementById('main-header');
-            const bodyElement = document.body;
+            const headerPlaceholder = document.getElementById('header-placeholder');
 
-            const setBodyPadding = () => {
-                const headerHeight = mainHeader.offsetHeight;
-                bodyElement.style.paddingTop = headerHeight + 'px';
+            // Set body padding-top to header height (once and on resize)
+            const setHeaderPlaceholderHeight = () => {
+                if (mainHeader) {
+                    headerPlaceholder.style.height = mainHeader.offsetHeight + 'px';
+                }
             };
 
-            setBodyPadding();
+            setHeaderPlaceholderHeight();
+            window.addEventListener('resize', setHeaderPlaceholderHeight);
 
+            // Mobile menu toggle
             mobileMenuButton.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
-                setBodyPadding();
+                mobileMenuButton.classList.toggle('active');
+                setHeaderPlaceholderHeight();
             });
 
+            // Close mobile menu on link click
             const mobileLinks = mobileMenu.querySelectorAll('a');
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     if (!mobileMenu.classList.contains('hidden')) {
                         mobileMenu.classList.add('hidden');
-                        setBodyPadding();
+                        mobileMenuButton.classList.remove('active');
+                        setHeaderPlaceholderHeight();
                     }
                 });
             });
 
+            // Responsive sticky header: hide on scroll down, show on scroll up
             let lastScrollY = window.scrollY;
             let ticking = false;
 
             function handleScroll() {
                 const currentScrollY = window.scrollY;
 
-                if (currentScrollY > 50) {
-                    mainHeader.classList.add('bg-green-dark', 'bg-opacity-100', 'shadow-lg');
-                    mainHeader.classList.remove('bg-green-dark/90', 'shadow-md');
-                } else {
-                    mainHeader.classList.remove('bg-green-dark', 'bg-opacity-100', 'shadow-lg');
-                    mainHeader.classList.add('bg-green-dark/90', 'shadow-md');
-                }
-
+                // Hide on scroll down, show on scroll up
                 if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                    mainHeader.classList.add('-translate-y-full');
+                    // Scroll down
+                    mainHeader.style.transform = 'translateY(-100%)';
                 } else {
-                    mainHeader.classList.remove('-translate-y-full');
+                    // Scroll up
+                    mainHeader.style.transform = '';
                 }
 
                 lastScrollY = currentScrollY;
-                setBodyPadding();
             }
 
             window.addEventListener('scroll', () => {
@@ -286,9 +552,20 @@
                 }
             });
 
-            window.addEventListener('resize', setBodyPadding);
+            window.addEventListener('resize', setHeaderPlaceholderHeight);
 
-            const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        handleScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // Scroll Reveal functionality
+            const scrollRevealElements = document.querySelectorAll('.scroll-reveal-item');
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
