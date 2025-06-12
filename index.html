@@ -473,7 +473,7 @@
                            lg:grid lg:grid-cols-2 xl:grid-cols-3 scroll-reveal-group"
                     style="scrollbar-width: thin; scrollbar-color: #B0B0B0 #f4f3ee; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; overscroll-behavior-y: none; min-height: 0;"
                 >
-                    <a href="project-stadstuin-amsterdam.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 project-card-hover-effect min-w-[80vw] max-w-[80vw] sm:min-w-[45vw] sm:max-w-[45vw] lg:min-w-0 lg:max-w-none snap-start flex-shrink-0 scroll-reveal-item">
+                    <a href="project-stadstuin-amsterdam.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 project-card-hover-effect min-w-[80vw] max-w-[80vw] sm:min-w-[45vw] sm:max-w-[45vw] lg:min-w-0 lg:max-w-none snap-start flex-shrink-0 scroll-reveal-item first:ml-[8vw] sm:first:ml-0">
                         <img src="https://placehold.co/600x400/264d32/f4f3ee?text=Stadstuin+Amsterdam" alt="Stadstuin Amsterdam" class="w-full h-56 sm:h-64 md:h-72 object-cover card-image">
                         <div class="image-overlay"></div>
                         <div class="card-text-content">
@@ -483,7 +483,7 @@
                         </div>
                     </a>
                     <a href="project-familietuin-utrecht.html" class="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 project-card-hover-effect min-w-[80vw] max-w-[80vw] sm:min-w-[45vw] sm:max-w-[45vw] lg:min-w-0 lg:max-w-none snap-start flex-shrink-0 scroll-reveal-item">
-                        <img src="https://placehold.co/600x400/264d32/f4f3ee?text=Familie+Tuin+Utrecht" alt="Ruime Familietuin Utrecht" class="w-full h-56 sm:h-64 md:h-72 object-cover card-image">
+                        <img src="https://placehold.co/600x400/264d32/f4f3ee?text=Familie+Tuin+Utrecht" alt="Ruime Famil""ietuin Utrecht" class="w-full h-56 sm:h-64 md:h-72 object-cover card-image">
                         <div class="image-overlay"></div>
                         <div class="card-text-content">
                             <h3 class="font-bold mb-1 text-xl text-light-bg">Ruime Familietuin Utrecht</h3>
@@ -553,28 +553,48 @@
             }
             /* Mobiel: cards overlappen niet, er is ruimte tussen de kaarten */
             @media (max-width: 639px) {
+                /* Apply scroll-snap properties to the container */
+                #projecten .flex.overflow-x-auto {
+                    scroll-snap-type: x mandatory; /* Enable horizontal snapping, mandatory means it must snap */
+                    /* Set the initial padding for the first card to its desired 1.5rem offset. */
+                    scroll-padding-left: 1.5rem;
+                    /* Use 'gap' property to create space BETWEEN flex items. */
+                    gap: 0.01rem; /* This controls the white space BETWEEN cards */
+                }
+
                 #projecten .flex.overflow-x-auto > a {
-                    margin-right: 0.1rem;
+                    margin-right: 0rem;           /* Not strictly needed anymore, 'gap' handles spacing */
+                    margin-left: 1rem;            /* Set to 0 as 'gap' property now manages inter-card spacing */
+
+                    /* IMPORTANT: Set card width to ensure the next card is visible and they are not too wide.
+                    Calculation:
+                    100vw (viewport width)
+                    - 1.5rem (scroll-padding-left: initial offset for the first card)
+                    - 0.5rem (gap: space between the snapped card and the next)
+                    - 10rem (This is the remaining space on the right to ensure the desired 'peek' of the next card,
+                                contributing to the narrower overall card size. Adjust this value to make cards wider/narrower.)
+                    = 100vw - 12rem (total non-card space removed from 100vw to determine card width)
+                    */
+                    min-width: calc(100vw - 12rem);
+                    max-width: calc(100vw - 12rem); /* Use max-width to prevent cards from becoming too wide */
+
+                    scroll-snap-align: start;     /* Make each card snap to the start of the scroll container's padded area */
                 }
                 #projecten .flex.overflow-x-auto > a:last-child {
-                    margin-right: 0;
+                    margin-right: 0; /* Ensures no extra margin after the very last card */
                 }
                 #projecten .block.sm\:hidden {
-                    display: block !important;
-                    min-width: 16vw;
-                    height: 1px;
+                    display: block !important; /* Ensure this spacer element is visible on mobile */
+                    min-width: 16vw;           /* Provides extra scrollable space, especially at the end */
+                    height: 1px;               /* Keeps it visually minimal */
                 }
-                /* Center de eerste kaart in het midden van het scherm */
-                #projecten .flex.overflow-x-auto > a:first-child {
-                    margin-left: calc(50vw - 40vw - 8vw); /* Center de eerste kaart, maar laat 1/10e van de tweede kaart zien */
-                    scroll-snap-align: center;             /* Zorg dat de kaart in het midden snapt bij scrollen */
-                }
+                /* The :first-child rule for margin-left is no longer needed as scroll-padding-left handles the first item's offset */
             }
             /* Desktop: normale grid, alle rijen zichtbaar */
             @media (min-width: 1024px) {
                 #projecten .flex.overflow-x-auto {
                     display: grid !important;
-                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                   grid-template-columns: repeat(2, minmax(0, 1fr));
                     gap: 2rem;
                     overflow-x: visible !important;
                     max-height: none !important;
